@@ -444,8 +444,6 @@ class HalluEvalLoader(DatasetLoader):
         return {
             "id": str(uuid.uuid5(uuid.NAMESPACE_DNS, query)),
             "question": query,
-            # "steps": right_answer,
-            # "answer": hallucinated_answer,
             "steps": hallucinated_answer,
             "answer": right_answer,
         }
