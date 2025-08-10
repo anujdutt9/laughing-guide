@@ -26,7 +26,7 @@ def select_layers(activations, layers):
         return activations
     return {layer: activations[layer] for layer in layers}
 
-# Try only the middle layers as per the different paperes
+# Try only the middle layers as per the different papers
 LAYERS_MAP = {
     "HuggingFaceTB/SmolLM2-360M-Instruct": [13, 14, 15, 16, 17, 18, 19],
     "meta-llama/Llama-3.2-1B-Instruct": [6, 7, 8, 9, 10],
@@ -37,7 +37,7 @@ LAYERS_MAP = {
     "microsoft/Phi-4-mini-instruct": [15, 16, 17],
 }
 
-# TEST: --model "Qwen/Qwen2-0.5B-Instruct" --task "hallueval" --device "mps" --batch_size 8 --output_dir "hallueval_activation_steering"
+# TEST: --model "Qwen/Qwen2-0.5B-Instruct" --task "hallueval" --device "mps" --n 160 --add_question --num_fewshot_examples 5 --n_contrastive_samples 200 --encoding_method "instruct" --add_generation_prompt --sample_selection_method "distance" --batch_size 32 --output_dir "hallueval_activation_steering"
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument('--model', type=str)
