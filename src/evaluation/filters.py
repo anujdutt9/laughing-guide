@@ -144,6 +144,26 @@ class PIQAFilter(Filter):
         return text
 
 
+class HalluEvalFilter(Filter):
+    """Filter for extracting answers from HalluEval QA responses."""
+
+    def normalize_text(self, text: str):
+        """Normalize extracted text by removing extra punctuation."""
+        # Remove trailing punctuation that might interfere with matching
+        text = text.rstrip('.,!?;:')
+        # Remove excessive whitespace
+        text = re.sub(r"\s+", " ", text).strip()
+        return text
+
+    def preprocess(self, text: str):
+        """Preprocess the input text before pattern matching."""
+        # Replace newlines with spaces for better pattern matching
+        text = text.replace("\n", " ")
+        # Remove excessive whitespace
+        text = re.sub(r"\s+", " ", text)
+        return text
+
+
 PATTERNS = {
     "multiple_choice": [
         r"[Tt]he correct choice is:?\s*([A-E])\b",
@@ -160,6 +180,10 @@ PATTERNS = {
         r"^([A-E])\s*:",
     ],
     "digit": [r"(-?[$0-9.,]{2,})|(-?[0-9]+)"],
+    "text_answer": [
+        r"[Tt]he answer is:?\s*(.+?)(?:\.|$)",  # Captures everything after "The answer is" until period or end
+        r"[Ff]inal answer:?\s*(.+?)(?:\.|$)",   # Alternative format
+    ],
 }
 
 FILTERS = {
@@ -185,5 +209,9 @@ FILTERS = {
     ],
     Tasks.piqa_oai: [
         PIQAFilter(PATTERNS["multiple_choice"], name="augmented_extract"),
+    ],
+    Tasks.hallueval: [
+        HalluEvalFilter(PATTERNS["text_answer"], name="text_extract"),
+        HalluEvalFilter([r"(.+)"], name="fallback_full_text"),  # Fallback to capture entire response
     ],
 }
