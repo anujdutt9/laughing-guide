@@ -37,7 +37,9 @@ LAYERS_MAP = {
     "microsoft/Phi-4-mini-instruct": [15, 16, 17],
 }
 
-# TEST: --model "Qwen/Qwen2-0.5B-Instruct" --task "hallueval" --device "mps" --n 160 --add_question --num_fewshot_examples 5 --n_contrastive_samples 200 --encoding_method "instruct" --add_generation_prompt --sample_selection_method "distance" --batch_size 32 --output_dir "hallueval_activation_steering"
+# TEST: --model "Qwen/Qwen2-0.5B-Instruct" --task "hallueval" --device "mps" --n 160 --add_question
+# --num_fewshot_examples 5 --n_contrastive_samples 200 --encoding_method "instruct" --add_generation_prompt
+# --sample_selection_method "distance" --batch_size 32 --output_dir "hallueval_activation_steering" --max_new_tokens 512
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument('--model', type=str)

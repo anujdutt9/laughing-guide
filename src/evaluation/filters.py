@@ -183,6 +183,12 @@ PATTERNS = {
     "text_answer": [
         r"[Tt]he answer is:?\s*(.+?)(?:\.|$)",  # Captures everything after "The answer is" until period or end
         r"[Ff]inal answer:?\s*(.+?)(?:\.|$)",   # Alternative format
+        r"^(.+?)(?:<\|im_end\|>|$)",           # Capture everything until the end token (for direct answers)
+        r"^(.+?)(?:\.|$)",                     # Capture everything until period or end (fallback)
+    ],
+    "direct_text": [
+        r"^(.+?)(?:<\|im_end\|>|$)",           # Capture everything until the end token
+        r"^(.+?)(?:\.|$)",                     # Capture everything until period or end
     ],
 }
 
@@ -212,6 +218,7 @@ FILTERS = {
     ],
     Tasks.hallueval: [
         HalluEvalFilter(PATTERNS["text_answer"], name="text_extract"),
+        HalluEvalFilter(PATTERNS["direct_text"], name="direct_extract"),  # New filter for direct answers
         HalluEvalFilter([r"(.+)"], name="fallback_full_text"),  # Fallback to capture entire response
     ],
 }
