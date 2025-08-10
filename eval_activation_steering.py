@@ -213,7 +213,7 @@ if __name__ == "__main__":
                 save_experiment_results(result, args_dict, experiment_id, args.task, is_baseline=False)
                 # After computing or selecting the steering vector for this run
                 steering_vector_path = os.path.join(args.output_dir, f"steering_vector_{experiment_id}.pt")
-                torch.save(steering_vector.state_dict(), steering_vector_path)
+                torch.save(steering_vector, steering_vector_path)
 
             finally:
                 handle.remove()
